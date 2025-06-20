@@ -45,6 +45,18 @@
         button:hover {
             background-color: #e03a00;
         }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+        }
         .disclaimer {
             margin-top: 20px;
             font-size: 12px;
@@ -60,20 +72,95 @@
             <input type="url" id="scribd-url" placeholder="Paste Scribd document URL here..." required>
         </div>
         <button onclick="downloadDocument()">Download Document</button>
+        
+        <div id="loading" class="loading">
+            <p>Processing document...</p>
+        </div>
+        
+        <div id="result" class="result">
+            <h3 id="doc-title"></h3>
+            <p><strong>Author:</strong> <span id="doc-author"></span></p>
+            <p><strong>Pages:</strong> <span id="doc-pages"></span></p>
+            <p><strong>Description:</strong> <span id="doc-desc"></span></p>
+            <a id="download-link" href="#" target="_blank" style="display: none;">
+                <button>Download Now</button>
+            </a>
+            <p id="error-message" style="color: red;"></p>
+        </div>
+        
         <div class="disclaimer">
-            <p><strong>Note:</strong> This tool is for educational purposes only. Downloading copyrighted content may violate Scribd's terms of service.</p>
+            <p><strong>Note:</strong> This is a simulation for educational purposes. Actual Scribd downloads require proper authorization.</p>
         </div>
     </div>
 
     <script>
         function downloadDocument() {
             const url = document.getElementById('scribd-url').value;
-            if (!url.includes('scribd.com')) {
-                alert("Please enter a valid Scribd URL!");
+            const resultDiv = document.getElementById('result');
+            const loadingDiv = document.getElementById('loading');
+            const errorMsg = document.getElementById('error-message');
+            
+            // Reset UI
+            resultDiv.style.display = 'none';
+            errorMsg.textContent = '';
+            loadingDiv.style.display = 'block';
+            
+            if (!url || !url.includes('scribd.com')) {
+                showError("Please enter a valid Scribd URL!");
+                loadingDiv.style.display = 'none';
                 return;
             }
-            alert("This is a frontend demo. A real downloader requires a backend service.");
-            // In a real app, you would send the URL to a backend API for processing.
+            
+            // Simulate API delay
+            setTimeout(() => {
+                // This is a simulation - in a real app you would call your backend here
+                simulateDownload(url);
+                loadingDiv.style.display = 'none';
+            }, 1500);
+        }
+        
+        function simulateDownload(url) {
+            const resultDiv = document.getElementById('result');
+            const downloadLink = document.getElementById('download-link');
+            const errorMsg = document.getElementById('error-message');
+            
+            try {
+                // Extract filename from URL or use a default
+                const urlParts = url.split('/');
+                let filename = "scribd_document";
+                if (urlParts.length > 4) {
+                    filename = urlParts[urlParts.length - 1];
+                }
+                
+                // Simulate extracted data
+                document.getElementById('doc-title').textContent = filename.replace(/-/g, ' ');
+                document.getElementById('doc-author').textContent = "Unknown Author";
+                document.getElementById('doc-pages').textContent = "10-50 pages (estimated)";
+                document.getElementById('doc-desc').textContent = "Sample document description";
+                
+                // In a real app, this would be the actual download URL from your backend
+                downloadLink.href = "#";
+                downloadLink.style.display = "inline-block";
+                downloadLink.onclick = function() {
+                    alert("In a real implementation, this would download the document.\n\nFor this demo, we're just showing how it would work.");
+                    return false;
+                };
+                
+                resultDiv.style.display = 'block';
+                errorMsg.textContent = '';
+                
+            } catch (error) {
+                showError("Failed to process document. This is a simulation - a real implementation would require proper backend services.");
+            }
+        }
+        
+        function showError(message) {
+            const resultDiv = document.getElementById('result');
+            const errorMsg = document.getElementById('error-message');
+            
+            resultDiv.style.display = 'block';
+            document.getElementById('download-link').style.display = 'none';
+            errorMsg.textContent = message;
         }
     </script>
 </body>
