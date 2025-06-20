@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribd Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff4400;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #ff4400;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #e03a00;
+        }
+        .disclaimer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scribd Downloader</h1>
+        <div class="input-group">
+            <input type="url" id="scribd-url" placeholder="Paste Scribd document URL here..." required>
+        </div>
+        <button onclick="downloadDocument()">Download Document</button>
+        <div class="disclaimer">
+            <p><strong>Note:</strong> This tool is for educational purposes only. Downloading copyrighted content may violate Scribd's terms of service.</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadDocument() {
+            const url = document.getElementById('scribd-url').value;
+            if (!url.includes('scribd.com')) {
+                alert("Please enter a valid Scribd URL!");
+                return;
+            }
+            alert("This is a frontend demo. A real downloader requires a backend service.");
+            // In a real app, you would send the URL to a backend API for processing.
+        }
+    </script>
+</body>
+</html>
