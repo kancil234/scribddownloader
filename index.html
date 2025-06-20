@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scribd Downloader</title>
+    <title>My Scribd Download Helper</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,145 +22,77 @@
             color: #ff4400;
             text-align: center;
         }
-        .input-group {
+        .step {
             margin-bottom: 15px;
-        }
-        input[type="url"] {
-            width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
+            background-color: #f9f9f9;
             border-radius: 4px;
-            font-size: 16px;
         }
         button {
             background-color: #ff4400;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            width: 100%;
+            margin-top: 10px;
         }
-        button:hover {
-            background-color: #e03a00;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f9f9f9;
+        .hidden {
             display: none;
-        }
-        .loading {
-            text-align: center;
-            display: none;
-        }
-        .disclaimer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #777;
-            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Scribd Downloader</h1>
-        <div class="input-group">
-            <input type="url" id="scribd-url" placeholder="Paste Scribd document URL here..." required>
-        </div>
-        <button onclick="downloadDocument()">Download Document</button>
+        <h1>My Scribd Download Helper</h1>
         
-        <div id="loading" class="loading">
-            <p>Processing document...</p>
-        </div>
-        
-        <div id="result" class="result">
-            <h3 id="doc-title"></h3>
-            <p><strong>Author:</strong> <span id="doc-author"></span></p>
-            <p><strong>Pages:</strong> <span id="doc-pages"></span></p>
-            <p><strong>Description:</strong> <span id="doc-desc"></span></p>
-            <a id="download-link" href="#" target="_blank" style="display: none;">
-                <button>Download Now</button>
-            </a>
-            <p id="error-message" style="color: red;"></p>
+        <div class="step">
+            <h3>Step 1: Use Official Scribd Download</h3>
+            <p>For documents you've uploaded:</p>
+            <ol>
+                <li>Go to your Scribd library</li>
+                <li>Find your document</li>
+                <li>Click "Download" button</li>
+            </ol>
+            <button onclick="window.open('https://www.scribd.com/library')">Go to My Library</button>
         </div>
         
-        <div class="disclaimer">
-            <p><strong>Note:</strong> This is a simulation for educational purposes. Actual Scribd downloads require proper authorization.</p>
+        <div class="step">
+            <h3>Step 2: Convert to Text (For Personal Use)</h3>
+            <p>For text-based documents you can access:</p>
+            <button id="copyBtn">Copy Document Text</button>
+            <div id="instructions" class="hidden">
+                <p>1. Open the Scribd document</p>
+                <p>2. Select all text (Ctrl+A)</p>
+                <p>3. Copy (Ctrl+C)</p>
+                <p>4. Paste below:</p>
+                <textarea id="documentText" rows="10" style="width: 100%"></textarea>
+                <button onclick="saveAsText()">Save as TXT File</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function downloadDocument() {
-            const url = document.getElementById('scribd-url').value;
-            const resultDiv = document.getElementById('result');
-            const loadingDiv = document.getElementById('loading');
-            const errorMsg = document.getElementById('error-message');
-            
-            // Reset UI
-            resultDiv.style.display = 'none';
-            errorMsg.textContent = '';
-            loadingDiv.style.display = 'block';
-            
-            if (!url || !url.includes('scribd.com')) {
-                showError("Please enter a valid Scribd URL!");
-                loadingDiv.style.display = 'none';
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            document.getElementById('instructions').classList.remove('hidden');
+            alert("Please follow the instructions to copy text from your Scribd document");
+        });
+
+        function saveAsText() {
+            const text = document.getElementById('documentText').value;
+            if (!text) {
+                alert("Please paste some text first");
                 return;
             }
             
-            // Simulate API delay
-            setTimeout(() => {
-                // This is a simulation - in a real app you would call your backend here
-                simulateDownload(url);
-                loadingDiv.style.display = 'none';
-            }, 1500);
-        }
-        
-        function simulateDownload(url) {
-            const resultDiv = document.getElementById('result');
-            const downloadLink = document.getElementById('download-link');
-            const errorMsg = document.getElementById('error-message');
-            
-            try {
-                // Extract filename from URL or use a default
-                const urlParts = url.split('/');
-                let filename = "scribd_document";
-                if (urlParts.length > 4) {
-                    filename = urlParts[urlParts.length - 1];
-                }
-                
-                // Simulate extracted data
-                document.getElementById('doc-title').textContent = filename.replace(/-/g, ' ');
-                document.getElementById('doc-author').textContent = "Unknown Author";
-                document.getElementById('doc-pages').textContent = "10-50 pages (estimated)";
-                document.getElementById('doc-desc').textContent = "Sample document description";
-                
-                // In a real app, this would be the actual download URL from your backend
-                downloadLink.href = "#";
-                downloadLink.style.display = "inline-block";
-                downloadLink.onclick = function() {
-                    alert("In a real implementation, this would download the document.\n\nFor this demo, we're just showing how it would work.");
-                    return false;
-                };
-                
-                resultDiv.style.display = 'block';
-                errorMsg.textContent = '';
-                
-            } catch (error) {
-                showError("Failed to process document. This is a simulation - a real implementation would require proper backend services.");
-            }
-        }
-        
-        function showError(message) {
-            const resultDiv = document.getElementById('result');
-            const errorMsg = document.getElementById('error-message');
-            
-            resultDiv.style.display = 'block';
-            document.getElementById('download-link').style.display = 'none';
-            errorMsg.textContent = message;
+            const blob = new Blob([text], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'document.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
